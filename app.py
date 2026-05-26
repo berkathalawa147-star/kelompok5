@@ -7,8 +7,7 @@ import matplotlib.pyplot as plt
 # =====================================================
 
 st.set_page_config(
-    page_title="Aplikasi Matematika Terapan",
-    page_icon="📘",
+    page_title=" Kelompok 5 Aplikasi Matematika Terapan",
     layout="wide"
 )
 
@@ -17,7 +16,7 @@ st.set_page_config(
 # =====================================================
 
 menu = st.sidebar.selectbox(
-    "📌 Pilih Menu",
+    "Pilih Menu",
     [
         "Home",
         "Kalkulator SPL",
@@ -33,7 +32,7 @@ menu = st.sidebar.selectbox(
 
 if menu == "Home":
 
-    st.title("📘 Aplikasi Matematika Terapan")
+    st.title("Aplikasi Matematika Terapan")
 
     st.image(
         "https://cdn-icons-png.flaticon.com/512/2103/2103633.png",
@@ -59,7 +58,7 @@ if menu == "Home":
 
 elif menu == "Kalkulator SPL":
 
-    st.title("⚡ Kalkulator SPL Rangkaian Listrik")
+    st.title("Kalkulator SPL Rangkaian Listrik")
 
     col1, col2 = st.columns(2)
 
@@ -110,7 +109,7 @@ elif menu == "Kalkulator SPL":
 
         I1, I2, I3 = hasil
 
-        st.write("## ✅ Hasil Arus")
+        st.write("## Hasil Arus")
 
         c1, c2, c3 = st.columns(3)
 
@@ -132,7 +131,7 @@ elif menu == "Kalkulator SPL":
             st.error("⚠ Sistem OVERLOAD")
 
         else:
-            st.success("✅ Sistem NORMAL")
+            st.success("Sistem NORMAL")
 
     else:
         st.error("Sistem tidak memiliki solusi unik.")
@@ -143,7 +142,7 @@ elif menu == "Kalkulator SPL":
 
 elif menu == "Analisis Matriks":
 
-    st.title("📊 Analisis Matriks")
+    st.title("Analisis Matriks")
 
     matrix = st.text_area(
         "Masukkan matriks (pisahkan angka dengan spasi)",
@@ -184,7 +183,7 @@ elif menu == "Analisis Matriks":
 
 elif menu == "Grafik Arus":
 
-    st.title("📈 Grafik Interaktif")
+    st.title("Grafik Interaktif")
 
     x = np.linspace(0, 10, 100)
 
