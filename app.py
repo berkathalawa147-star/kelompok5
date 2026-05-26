@@ -206,7 +206,7 @@ elif menu == "Tentang Aplikasi":
     st.title("ℹ Tentang")
 
     st.write("""
-    Aplikasi ini dibuat untuk memenuhi tugas Matematika Terapan.
+    Aplikasi ini dibuat oleh kelompok 5 untuk memenuhi tugas Matematika Terapan. 
 
     Konsep yang digunakan:
     - SPL
