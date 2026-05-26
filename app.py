@@ -2,197 +2,223 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 
-# =========================================================
-# APLIKASI MATEMATIKA TERAPAN
-# ANALISIS RANGKAIAN LISTRIK MENGGUNAKAN SPL
-# =========================================================
+# =====================================================
+# KONFIGURASI
+# =====================================================
 
 st.set_page_config(
-    page_title="Analisis Rangkaian Listrik",
+    page_title="Aplikasi Matematika Terapan",
+    page_icon="📘",
     layout="wide"
 )
 
-st.title("⚡ Aplikasi Analisis Rangkaian Listrik")
-st.subheader("Implementasi Matematika Terapan Menggunakan Python & Streamlit")
+# =====================================================
+# SIDEBAR MENU
+# =====================================================
 
-st.write("""
-Aplikasi ini menggunakan konsep:
-1. SPL (Sistem Persamaan Linear)
-2. Matriks
-3. Determinan
-4. Vektor
-5. Logika
-6. Visualisasi Grafik
-""")
+menu = st.sidebar.selectbox(
+    "📌 Pilih Menu",
+    [
+        "Home",
+        "Kalkulator SPL",
+        "Analisis Matriks",
+        "Grafik Arus",
+        "Tentang Aplikasi"
+    ]
+)
 
-st.divider()
+# =====================================================
+# HALAMAN HOME
+# =====================================================
 
-# =========================================================
-# INPUT
-# =========================================================
+if menu == "Home":
 
-st.header("📥 Input Nilai Komponen")
+    st.title("📘 Aplikasi Matematika Terapan")
 
-col1, col2 = st.columns(2)
+    st.image(
+        "https://cdn-icons-png.flaticon.com/512/2103/2103633.png",
+        width=150
+    )
 
-with col1:
-    st.subheader("Resistor (Ohm)")
-    R1 = st.number_input("R1", value=10.0)
-    R2 = st.number_input("R2", value=8.0)
-    R3 = st.number_input("R3", value=6.0)
-    R4 = st.number_input("R4", value=4.0)
-    R5 = st.number_input("R5", value=5.0)
+    st.write("""
+    Selamat datang di aplikasi matematika terapan berbasis Streamlit.
 
-with col2:
-    st.subheader("Tegangan (Volt)")
-    V1 = st.number_input("V1", value=12.0)
-    V2 = st.number_input("V2", value=9.0)
-    V3 = st.number_input("V3", value=6.0)
+    Aplikasi ini menggunakan konsep:
+    - SPL
+    - Matriks
+    - Determinan
+    - Vektor
+    - Logika Boolean
+    """)
 
-st.divider()
+    st.success("Pilih menu di sidebar untuk mulai menggunakan aplikasi.")
 
-# =========================================================
-# MODEL MATEMATIKA
-# =========================================================
+# =====================================================
+# HALAMAN SPL
+# =====================================================
 
-st.header("📘 Model Matematis")
+elif menu == "Kalkulator SPL":
 
-st.latex(r'''
-\begin{cases}
-(R1+R3)I_1 - R3I_2 = V1 \\
--R3I_1 + (R2+R3+R4)I_2 - R4I_3 = V2 \\
--R4I_2 + (R4+R5)I_3 = V3
-\end{cases}
-''')
+    st.title("⚡ Kalkulator SPL Rangkaian Listrik")
 
-st.write("Bentuk Matriks:")
+    col1, col2 = st.columns(2)
 
-st.latex(r'''
-AX = B
-''')
+    with col1:
 
-# =========================================================
-# MEMBENTUK MATRKS
-# =========================================================
+        st.subheader("Input Resistor")
 
-A = np.array([
-    [R1 + R3, -R3, 0],
-    [-R3, R2 + R3 + R4, -R4],
-    [0, -R4, R4 + R5]
-])
+        R1 = st.number_input("R1", value=4.0)
+        R2 = st.number_input("R2", value=6.0)
+        R3 = st.number_input("R3", value=2.0)
+        R4 = st.number_input("R4", value=5.0)
+        R5 = st.number_input("R5", value=3.0)
 
-B = np.array([V1, V2, V3])
+    with col2:
 
-st.subheader("Matriks A")
-st.write(A)
+        st.subheader("Input Tegangan")
 
-st.subheader("Matriks B")
-st.write(B)
+        V1 = st.number_input("V1", value=12.0)
+        V2 = st.number_input("V2", value=10.0)
+        V3 = st.number_input("V3", value=8.0)
 
-# =========================================================
-# DETERMINAN
-# =========================================================
+    st.subheader("Model Matematis")
 
-st.header("🧮 Determinan Matriks")
+    st.latex(r"""
+    \begin{cases}
+    (R1+R3)I_1 - R3I_2 = V1 \\
+    -R3I_1 + (R2+R3+R4)I_2 - R4I_3 = V2 \\
+    -R4I_2 + (R4+R5)I_3 = V3
+    \end{cases}
+    """)
 
-determinan = np.linalg.det(A)
+    A = np.array([
+        [R1 + R3, -R3, 0],
+        [-R3, R2 + R3 + R4, -R4],
+        [0, -R4, R4 + R5]
+    ])
 
-st.latex(r'\det(A)')
+    B = np.array([V1, V2, V3])
 
-st.write("Nilai Determinan:", round(determinan, 2))
+    determinan = np.linalg.det(A)
 
-# =========================================================
-# LOGIKA
-# =========================================================
+    st.write("### Determinan")
+    st.write(f"Det(A) = {determinan:.2f}")
 
-st.header("🧠 Analisis Logika")
+    if determinan != 0:
 
-if determinan == 0:
-    st.error("Sistem tidak memiliki solusi unik!")
-else:
-    st.success("Sistem memiliki solusi unik.")
+        hasil = np.linalg.solve(A, B)
 
-# =========================================================
-# MENYELESAIKAN SPL
-# =========================================================
+        I1, I2, I3 = hasil
 
-st.header("📌 Penyelesaian SPL")
+        st.write("## ✅ Hasil Arus")
 
-if determinan != 0:
+        c1, c2, c3 = st.columns(3)
 
-    solusi = np.linalg.solve(A, B)
+        c1.metric("I1", f"{I1:.2f} A")
+        c2.metric("I2", f"{I2:.2f} A")
+        c3.metric("I3", f"{I3:.2f} A")
 
-    I1 = solusi[0]
-    I2 = solusi[1]
-    I3 = solusi[2]
+        magnitude = np.sqrt(I1**2 + I2**2 + I3**2)
 
-    st.subheader("Hasil Arus")
+        st.write("### Magnitude Vektor")
 
-    st.write(f"I1 = {I1:.3f} Ampere")
-    st.write(f"I2 = {I2:.3f} Ampere")
-    st.write(f"I3 = {I3:.3f} Ampere")
+        st.latex(r"|\vec{I}| = \sqrt{I_1^2 + I_2^2 + I_3^2}")
 
-    # =====================================================
-    # VEKTOR
-    # =====================================================
+        st.write(f"Hasil = {magnitude:.2f}")
 
-    st.header("➡️ Konsep Vektor")
+        overload = (I1 > 5) or (I2 > 5) or (I3 > 5)
 
-    magnitude = np.sqrt(I1**2 + I2**2 + I3**2)
+        if overload:
+            st.error("⚠ Sistem OVERLOAD")
 
-    st.latex(r'''
-    |\vec{I}| = \sqrt{I_1^2 + I_2^2 + I_3^2}
-    ''')
-
-    st.write("Magnitude Vektor Arus:", round(magnitude, 3))
-
-    # =====================================================
-    # BOOLEAN & LOGIKA KOMPLEKS
-    # =====================================================
-
-    st.header("🔍 Status Sistem")
-
-    overload = (I1 > 5) or (I2 > 5) or (I3 > 5)
-    aman = (I1 < 5) and (I2 < 5) and (I3 < 5)
-
-    if overload:
-        st.error("⚠️ Sistem OVERLOAD")
-
-    elif aman:
-        st.success("✅ Sistem AMAN")
+        else:
+            st.success("✅ Sistem NORMAL")
 
     else:
-        st.warning("⚡ Sistem dalam kondisi NORMAL")
+        st.error("Sistem tidak memiliki solusi unik.")
 
-    # =====================================================
-    # VISUALISASI GRAFIK
-    # =====================================================
+# =====================================================
+# HALAMAN MATRIKS
+# =====================================================
 
-    st.header("📊 Visualisasi Grafik")
+elif menu == "Analisis Matriks":
 
-    arus = [I1, I2, I3]
-    label = ['I1', 'I2', 'I3']
+    st.title("📊 Analisis Matriks")
+
+    matrix = st.text_area(
+        "Masukkan matriks (pisahkan angka dengan spasi)",
+        "1 2 3\n4 5 6\n7 8 9"
+    )
+
+    try:
+
+        rows = matrix.strip().split("\n")
+
+        data = [list(map(float, row.split())) for row in rows]
+
+        M = np.array(data)
+
+        st.write("### Matriks")
+
+        st.write(M)
+
+        st.write("### Transpose")
+
+        st.write(M.T)
+
+        if M.shape[0] == M.shape[1]:
+
+            st.write("### Determinan")
+
+            st.write(np.linalg.det(M))
+
+        else:
+            st.warning("Determinan hanya untuk matriks persegi.")
+
+    except:
+        st.error("Format matriks salah.")
+
+# =====================================================
+# HALAMAN GRAFIK
+# =====================================================
+
+elif menu == "Grafik Arus":
+
+    st.title("📈 Grafik Interaktif")
+
+    x = np.linspace(0, 10, 100)
+
+    y = np.sin(x)
 
     fig, ax = plt.subplots()
 
-    ax.bar(label, arus)
+    ax.plot(x, y)
 
-    ax.set_title("Grafik Arus Tiap Loop")
-    ax.set_xlabel("Loop")
-    ax.set_ylabel("Arus (Ampere)")
+    ax.set_title("Grafik Sinus")
 
     st.pyplot(fig)
 
-# =========================================================
-# FOOTER
-# =========================================================
+# =====================================================
+# HALAMAN TENTANG
+# =====================================================
 
-st.divider()
+elif menu == "Tentang Aplikasi":
 
-st.info("""
-Aplikasi ini dibuat menggunakan:
-- Python
-- Streamlit
-- NumPy
-- Matplotlib
-""")
+    st.title("ℹ Tentang")
+
+    st.write("""
+    Aplikasi ini dibuat untuk memenuhi tugas Matematika Terapan.
+
+    Konsep yang digunakan:
+    - SPL
+    - Matriks
+    - Determinan
+    - Vektor
+    - Logika Boolean
+
+    Dibuat menggunakan:
+    - Python
+    - Streamlit
+    - NumPy
+    - Matplotlib
+    """)
