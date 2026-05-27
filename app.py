@@ -58,21 +58,47 @@ if menu == "Home":
 
 elif menu == "Kalkulator SPL":
 
-    st.title("⚡ Kalkulator SPL")
+    st.title("Kalkulator SPL Rangkaian Listrik")
 
-    R1 = st.number_input("R1", value=4.0)
-    R2 = st.number_input("R2", value=6.0)
-    R3 = st.number_input("R3", value=2.0)
-    R4 = st.number_input("R4", value=5.0)
-    R5 = st.number_input("R5", value=3.0)
+    # INPUT
 
-    V1 = st.number_input("V1", value=12.0)
-    V2 = st.number_input("V2", value=10.0)
-    V3 = st.number_input("V3", value=8.0)
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        st.subheader("Input Resistor")
+
+        R1 = st.number_input("R1", value=4.0)
+        R2 = st.number_input("R2", value=6.0)
+        R3 = st.number_input("R3", value=2.0)
+        R4 = st.number_input("R4", value=5.0)
+        R5 = st.number_input("R5", value=3.0)
+
+    with col2:
+
+        st.subheader("Input Tegangan")
+
+        V1 = st.number_input("V1", value=12.0)
+        V2 = st.number_input("V2", value=10.0)
+        V3 = st.number_input("V3", value=8.0)
+
+    # MODEL MATEMATIS
+
+    st.subheader("Model Matematis")
+
+    st.latex(r"""
+    \begin{cases}
+    (R1+R3)I_1 - R3I_2 = V1 \\
+    -R3I_1 + (R2+R3+R4)I_2 - R4I_3 = V2 \\
+    -R4I_2 + (R4+R5)I_3 = V3
+    \end{cases}
+    """)
 
     tombol = st.button("Hitung SPL")
 
     if tombol:
+
+        # MATRKS
 
         A = np.array([
             [R1 + R3, -R3, 0],
@@ -82,18 +108,67 @@ elif menu == "Kalkulator SPL":
 
         B = np.array([V1, V2, V3])
 
-        hasil = np.linalg.solve(A, B)
+        # TAMPILKAN MATRKS
 
-        I1, I2, I3 = hasil
+        st.subheader("Matriks Koefisien")
 
-        # SIMPAN DATA
-        st.session_state["grafik"] = [I1, I2, I3]
+        st.write(A)
 
-        st.success("Perhitungan berhasil")
+        # DETERMINAN
 
-        st.write(f"I1 = {I1:.2f}")
-        st.write(f"I2 = {I2:.2f}")
-        st.write(f"I3 = {I3:.2f}")
+        determinan = np.linalg.det(A)
+
+        st.subheader("Determinan")
+
+        st.write(f"Det(A) = {determinan:.2f}")
+
+        if determinan != 0:
+
+            # SPL
+
+            hasil = np.linalg.solve(A, B)
+
+            I1, I2, I3 = hasil
+
+            # SIMPAN UNTUK GRAFIK
+
+            st.session_state["grafik"] = [I1, I2, I3]
+
+            # HASIL
+
+            st.subheader("Hasil Arus")
+
+            c1, c2, c3 = st.columns(3)
+
+            c1.metric("I1", f"{I1:.2f} A")
+            c2.metric("I2", f"{I2:.2f} A")
+            c3.metric("I3", f"{I3:.2f} A")
+
+            # VEKTOR
+
+            magnitude = np.sqrt(I1**2 + I2**2 + I3**2)
+
+            st.subheader("Magnitude Vektor")
+
+            st.latex(r"|\vec{I}| = \sqrt{I_1^2 + I_2^2 + I_3^2}")
+
+            st.write(f"Hasil = {magnitude:.2f}")
+
+            # BOOLEAN
+
+            overload = (I1 > 5) or (I2 > 5) or (I3 > 5)
+
+            if overload:
+
+                st.error("⚠ Sistem OVERLOAD")
+
+            else:
+
+                st.success("Sistem NORMAL")
+
+        else:
+
+            st.error("Determinan = 0, sistem tidak memiliki solusi unik.")
 # =====================================================
 # HALAMAN MATRIKS
 # =====================================================
