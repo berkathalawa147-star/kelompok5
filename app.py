@@ -183,51 +183,15 @@ elif menu == "Analisis Matriks":
 
 elif menu == "Grafik Arus":
 
-    st.title("📈 Grafik Interaktif Arus")
+   elif menu == "Grafik Arus":
 
-    st.write("Masukkan nilai resistor dan tegangan")
+    st.title("Grafik Arus Listrik")
 
-    col1, col2 = st.columns(2)
+    if "I1" in st.session_state:
 
-    with col1:
-
-        R1 = st.number_input("R1", value=4.0, key="g1")
-        R2 = st.number_input("R2", value=6.0, key="g2")
-        R3 = st.number_input("R3", value=2.0, key="g3")
-        R4 = st.number_input("R4", value=5.0, key="g4")
-        R5 = st.number_input("R5", value=3.0, key="g5")
-
-    with col2:
-
-        V1 = st.number_input("V1", value=12.0, key="g6")
-        V2 = st.number_input("V2", value=10.0, key="g7")
-        V3 = st.number_input("V3", value=8.0, key="g8")
-
-    # Matriks SPL
-
-    A = np.array([
-        [R1 + R3, -R3, 0],
-        [-R3, R2 + R3 + R4, -R4],
-        [0, -R4, R4 + R5]
-    ])
-
-    B = np.array([V1, V2, V3])
-
-    determinan = np.linalg.det(A)
-
-    if determinan != 0:
-
-        hasil = np.linalg.solve(A, B)
-
-        I1, I2, I3 = hasil
-
-        st.write("## Hasil Perhitungan")
-
-        st.write(f"I1 = {I1:.2f} A")
-        st.write(f"I2 = {I2:.2f} A")
-        st.write(f"I3 = {I3:.2f} A")
-
-        # Grafik
+        I1 = st.session_state["I1"]
+        I2 = st.session_state["I2"]
+        I3 = st.session_state["I3"]
 
         label = ["I1", "I2", "I3"]
         data = [I1, I2, I3]
@@ -236,7 +200,7 @@ elif menu == "Grafik Arus":
 
         ax.bar(label, data)
 
-        ax.set_title("Grafik Arus Listrik")
+        ax.set_title("Grafik Arus Hasil SPL")
 
         ax.set_ylabel("Nilai Arus")
 
@@ -244,8 +208,7 @@ elif menu == "Grafik Arus":
 
     else:
 
-        st.error("Determinan = 0, sistem tidak memiliki solusi unik.")
-
+        st.warning("Silakan hitung SPL terlebih dahulu.")
 # =====================================================
 # HALAMAN TENTANG
 # =====================================================
