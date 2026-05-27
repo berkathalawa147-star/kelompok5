@@ -183,19 +183,68 @@ elif menu == "Analisis Matriks":
 
 elif menu == "Grafik Arus":
 
-    st.title("Grafik Interaktif")
+    st.title("📈 Grafik Interaktif Arus")
 
-    x = np.linspace(0, 10, 100)
+    st.write("Masukkan nilai resistor dan tegangan")
 
-    y = np.sin(x)
+    col1, col2 = st.columns(2)
 
-    fig, ax = plt.subplots()
+    with col1:
 
-    ax.plot(x, y)
+        R1 = st.number_input("R1", value=4.0, key="g1")
+        R2 = st.number_input("R2", value=6.0, key="g2")
+        R3 = st.number_input("R3", value=2.0, key="g3")
+        R4 = st.number_input("R4", value=5.0, key="g4")
+        R5 = st.number_input("R5", value=3.0, key="g5")
 
-    ax.set_title("Grafik Sinus")
+    with col2:
 
-    st.pyplot(fig)
+        V1 = st.number_input("V1", value=12.0, key="g6")
+        V2 = st.number_input("V2", value=10.0, key="g7")
+        V3 = st.number_input("V3", value=8.0, key="g8")
+
+    # Matriks SPL
+
+    A = np.array([
+        [R1 + R3, -R3, 0],
+        [-R3, R2 + R3 + R4, -R4],
+        [0, -R4, R4 + R5]
+    ])
+
+    B = np.array([V1, V2, V3])
+
+    determinan = np.linalg.det(A)
+
+    if determinan != 0:
+
+        hasil = np.linalg.solve(A, B)
+
+        I1, I2, I3 = hasil
+
+        st.write("## Hasil Perhitungan")
+
+        st.write(f"I1 = {I1:.2f} A")
+        st.write(f"I2 = {I2:.2f} A")
+        st.write(f"I3 = {I3:.2f} A")
+
+        # Grafik
+
+        label = ["I1", "I2", "I3"]
+        data = [I1, I2, I3]
+
+        fig, ax = plt.subplots()
+
+        ax.bar(label, data)
+
+        ax.set_title("Grafik Arus Listrik")
+
+        ax.set_ylabel("Nilai Arus")
+
+        st.pyplot(fig)
+
+    else:
+
+        st.error("Determinan = 0, sistem tidak memiliki solusi unik.")
 
 # =====================================================
 # HALAMAN TENTANG
