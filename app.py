@@ -183,8 +183,6 @@ elif menu == "Analisis Matriks":
 
 elif menu == "Grafik Arus":
 
-   elif menu == "Grafik Arus":
-
     st.title("Grafik Arus Listrik")
 
     if "I1" in st.session_state:
