@@ -183,22 +183,23 @@ elif menu == "Analisis Matriks":
 
 elif menu == "Grafik Arus":
 
-    st.title("Grafik Arus Listrik")
+    st.title("Grafik Arus")
 
     if "I1" in st.session_state:
 
-        I1 = st.session_state["I1"]
-        I2 = st.session_state["I2"]
-        I3 = st.session_state["I3"]
-
         label = ["I1", "I2", "I3"]
-        data = [I1, I2, I3]
+
+        data = [
+            st.session_state.I1,
+            st.session_state.I2,
+            st.session_state.I3
+        ]
 
         fig, ax = plt.subplots()
 
         ax.bar(label, data)
 
-        ax.set_title("Grafik Arus Hasil SPL")
+        ax.set_title("Grafik Hasil SPL")
 
         ax.set_ylabel("Nilai Arus")
 
