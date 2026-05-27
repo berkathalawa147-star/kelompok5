@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 # =====================================================
 
 st.set_page_config(
-    page_title=" Kelompok 5 Aplikasi Matematika Terapan",
+    page_title="Aplikasi Matematika Terapan",
     layout="wide"
 )
 
